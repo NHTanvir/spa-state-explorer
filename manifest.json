@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "SPA State Explorer",
+  "version": "1.0.0",
+  "description": "Reads a single-page app's live JS state and route table to surface hidden routes, flags, roles and endpoints. Authorized testing only.",
+  "permissions": ["storage", "sidePanel", "scripting", "tabs"],
+  "optional_host_permissions": ["*://*/*"],
+  "background": { "service_worker": "background.js" },
+  "side_panel": { "default_path": "panel.html" },
+  "action": { "default_title": "SPA State Explorer (open side panel)" },
+  "options_page": "options.html",
+  "icons": { "128": "icon.png" }
+}
