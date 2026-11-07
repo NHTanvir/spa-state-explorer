@@ -17,3 +17,11 @@ test('finds jwt by value', () => {
 test('ignores boring keys', () => {
   assert.equal(findInteresting({ title: 'x', count: 3 }).length, 0);
 });
+
+import { toMarkdown } from '../markdown.js';
+test('markdown includes interesting values, routes and endpoints', () => {
+  const md = toMarkdown({ probe: { state: { role: 'admin' } }, routes: ['/admin'], endpoints: ['/api/v1/x'] }, { host: 'x' });
+  assert.ok(md.includes('role'));
+  assert.ok(md.includes('/admin'));
+  assert.ok(md.includes('/api/v1/x'));
+});

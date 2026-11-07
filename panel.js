@@ -50,5 +50,10 @@ document.getElementById('scan').addEventListener('click', async () => {
   if (r && r.error) { body.innerHTML = `<p class="muted">${esc(r.error)}.</p>`; return; }
   data = r; render();
 });
+document.getElementById('copy').addEventListener('click', async () => {
+  const { toMarkdown } = await import('./markdown.js');
+  let host=''; try { const [t]=await chrome.tabs.query({active:true,currentWindow:true}); host=new URL(t.url).host; } catch {}
+  navigator.clipboard.writeText(toMarkdown(data, { host })).catch(() => {});
+});
 chrome.tabs.onActivated.addListener(refresh);
 refresh();
