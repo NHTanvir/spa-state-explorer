@@ -25,3 +25,17 @@ test('markdown includes interesting values, routes and endpoints', () => {
   assert.ok(md.includes('/admin'));
   assert.ok(md.includes('/api/v1/x'));
 });
+
+test('hits carry category, kind and severity', () => {
+  const hits = findInteresting({ user: { role: 'admin' }, auth: { token: 'eyJhbGciOiJIUzI.eyJzdWIiOiIxMjM.sigPART12345' } });
+  const role = hits.find((h) => h.key === 'role');
+  assert.equal(role.category, 'authorization');
+  assert.equal(role.kind, 'lead');
+  const jwt = hits.find((h) => h.key === '(jwt)');
+  assert.equal(jwt.kind, 'exposure');
+  assert.equal(jwt.severity, 'critical');
+});
+test('provider key signature detected', () => {
+  const hits = findInteresting({ cfg: { k: 'sk_live_abcdef0123456789' } });
+  assert.ok(hits.some((h) => h.key === '(provider-key)'));
+});
