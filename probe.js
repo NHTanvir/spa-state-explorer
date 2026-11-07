@@ -30,8 +30,9 @@ function runProbe() {
   }
   const snap = (v) => serialise(v, 6, 100, 2000, new WeakSet());
 
-  const KNOWN = ['__NEXT_DATA__', '__NUXT__', '__INITIAL_STATE__', '__PRELOADED_STATE__',
-    '__APOLLO_STATE__', '__remixContext', '__sveltekit', '__NEXT_REDUX_STORE__'];
+  const KNOWN = ['__NEXT_DATA__', '__NUXT__', '__NUXT_DATA__', '__INITIAL_STATE__', '__PRELOADED_STATE__',
+    '__APOLLO_STATE__', '__remixContext', '__sveltekit', '__NEXT_REDUX_STORE__',
+    '__next_f', '__BUILD_MANIFEST', '__SSG_MANIFEST'];
 
   const state = {};
   for (const key of KNOWN) {

@@ -18,3 +18,10 @@ test('extracts api endpoints and graphql ops', () => {
   assert.ok(eps.includes('/graphql'));
   assert.ok(eps.includes('graphql:GetSecret'));
 });
+
+test('next data and nuxt payload endpoints extracted', () => {
+  const js = `fetch('/_next/data/abc123/dashboard.json'); fetch('/_payload.json');`;
+  const eps = extractEndpoints(js);
+  assert.ok(eps.some((e) => e.includes('/_next/data/')));
+  assert.ok(eps.includes('/_payload.json'));
+});
