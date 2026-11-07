@@ -15,10 +15,13 @@ function render() {
     body.innerHTML = txt ? `<pre>${esc(q ? txt.split('\n').filter((l)=>l.toLowerCase().includes(q)).join('\n') : txt)}</pre>`
                          : '<p class="muted">Click “Read state”.</p>';
   } else if (tab === 'interesting') {
-    const hits = data.probe ? findInteresting(data.probe.state) : [];
+    const order = { critical: 0, high: 1, medium: 2, low: 3 };
+    const hits = (data.probe ? findInteresting(data.probe.state) : [])
+      .slice().sort((a, b) => (a.kind === b.kind ? 0 : a.kind === 'exposure' ? -1 : 1) || (order[a.severity] - order[b.severity]));
     const shown = hits.filter((h) => !q || (h.path + h.value).toLowerCase().includes(q));
     body.innerHTML = shown.length ? shown.map((h) =>
-      `<div class="hit"><span class="k">${esc(h.key)}</span> <code>${esc(h.path)}</code> = ${esc(h.value)}</div>`).join('')
+      `<div class="hit"><span class="badge ${h.kind === 'exposure' ? 'exp' : 'lead'}">${h.kind === 'exposure' ? 'EXPOSURE' : 'lead'}</span> `
+      + `<span class="k">${esc(h.key)}</span> <span class="cat">${esc(h.category || '')}</span> <code>${esc(h.path)}</code> = ${esc(h.value)}</div>`).join('')
       : '<p class="muted">No interesting keys (read state first).</p>';
   } else if (tab === 'routes') {
     const rs = (data.routes || []).filter((r) => !q || r.toLowerCase().includes(q));
